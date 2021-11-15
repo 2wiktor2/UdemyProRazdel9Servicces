@@ -8,7 +8,7 @@ import android.util.Log
 import kotlinx.coroutines.*
 
 class MyService : Service() {
-//    1. Создать класс  MyService
+//    1. Создать класс  MyService (объявить сервис в манифесте приложения в теге application)
 //    2. Унаследоваться от Service(android.app.Service)
 //    3. Переопределить пустой конструктор Service() (добавить скобки)
 //    4. переопределить методы onBind
@@ -17,6 +17,11 @@ class MyService : Service() {
 //    onCreate() - вызывается при создании сервиса
 //    onDestroy() - вызывается при уничтожении сервиса
 //    onStartCommand() - здесь выпроляется вся работа
+
+//    onStartCommand() должен возвращать одно из трех значений (пример:  return START_STICKY) :
+//    START_STICKY - если система убивает сервис, то он будет пересоздан
+//    START_NOT_STICKY - если система убивает сервис, то его перезапускать ненужно
+//    START_REDELIVER_INTENT - сохраняет intent который передается во время запуска сервиса. При пересоздании сервиса он передается снова
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
@@ -34,7 +39,7 @@ class MyService : Service() {
                 log("MyService", "onStartCommand", "timer $i")
             }
         }
-        return super.onStartCommand(intent, flags, startId)
+        return START_STICKY
     }
 
     override fun onDestroy() {
@@ -53,10 +58,8 @@ class MyService : Service() {
     }
 
     companion object {
-
         fun newIntent(context: Context): Intent {
             return Intent(context, MyService::class.java)
         }
-
     }
 }

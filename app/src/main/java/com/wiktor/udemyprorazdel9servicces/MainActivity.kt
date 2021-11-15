@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.simpleService.setOnClickListener {
             Log.i("qwertyu", "Click")
-            startService(MyService.newIntent(this))
+            startService(MyService2.newIntent(this, 25))
         }
     }
 }
